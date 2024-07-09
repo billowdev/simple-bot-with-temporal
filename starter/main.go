@@ -48,5 +48,5 @@ func main() {
 	}
 	defer c.Close()
 	RunSetTrade(c)
-	// RunGold(c)
+	RunGold(c)
 }
