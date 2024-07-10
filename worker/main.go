@@ -15,8 +15,9 @@ func register(w worker.Registry) {
 	w.RegisterWorkflow(bot.BotGoldWorkflow)
 	w.RegisterActivity(bot.BotGoldActivity)
 	w.RegisterActivity(bot.BotGoldActivity2)
-
 }
+
+// http://172.16.40.38:8088/namespaces/default/task-queues/cron_bot_gold_taskqueue
 
 func main() {
 	// Create a client connection to Temporal service
@@ -24,7 +25,6 @@ func main() {
 		// HostPort: client.DefaultHostPort,
 		HostPort: "172.16.40.38:7233",
 	})
-	// http://172.16.40.38:8088/namespaces/default/task-queues/cron_bot_gold_taskqueue
 	if err != nil {
 		log.Fatalln("Unable to create client", err)
 	}
@@ -34,6 +34,7 @@ func main() {
 	if err := w.Run(worker.InterruptCh()); err != nil {
 		log.Fatalln("Unable to start goldPriceWorker", err)
 	}
+
 
 	// // Define and start workers for each task queue
 	// go func() {

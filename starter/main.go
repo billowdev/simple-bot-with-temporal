@@ -42,7 +42,6 @@ func RunGold(c client.Client) {
 
 func main() {
 	c, err := client.Dial(client.Options{
-		// HostPort: client.DefaultHostPort,
 		HostPort: "172.16.40.38:7233",
 	})
 	if err != nil {

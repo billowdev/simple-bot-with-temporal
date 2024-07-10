@@ -5,14 +5,23 @@ import (
 	"time"
 
 	"go.temporal.io/sdk/activity"
+	"go.temporal.io/sdk/temporal"
 	"go.temporal.io/sdk/workflow"
 )
 
-
 func BotSetTradeWorkflow(ctx workflow.Context, url string) (*WorkflowResult, error) {
 	workflow.GetLogger(ctx).Info("Cron workflow started.", "StartTime", workflow.Now(ctx))
+
+	retryPolicy := &temporal.RetryPolicy{
+		InitialInterval:    time.Second * 1,
+		BackoffCoefficient: 2.0,
+		MaximumInterval:    time.Second * 100,
+		MaximumAttempts:    3,
+	}
+
 	ao := workflow.ActivityOptions{
 		StartToCloseTimeout: 10 * time.Second,
+		RetryPolicy:         retryPolicy,
 	}
 	ctx1 := workflow.WithActivityOptions(ctx, ao)
 	logger := workflow.GetLogger(ctx)

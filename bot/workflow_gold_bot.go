@@ -5,13 +5,23 @@ import (
 	"time"
 
 	"go.temporal.io/sdk/activity"
+	"go.temporal.io/sdk/temporal"
 	"go.temporal.io/sdk/workflow"
 )
 
 func BotGoldWorkflow(ctx workflow.Context, url string) (*WorkflowResult, error) {
 	workflow.GetLogger(ctx).Info("Cron workflow started.", "StartTime", workflow.Now(ctx))
+
+	retryPolicy := &temporal.RetryPolicy{
+		InitialInterval:    time.Second * 1,
+		BackoffCoefficient: 2.0,
+		MaximumInterval:    time.Second * 100,
+		MaximumAttempts:    3,
+	}
+
 	ao := workflow.ActivityOptions{
 		StartToCloseTimeout: 10 * time.Second,
+		RetryPolicy:         retryPolicy,
 	}
 	ctx1 := workflow.WithActivityOptions(ctx, ao)
 	logger := workflow.GetLogger(ctx)
@@ -47,12 +57,8 @@ func BotGoldWorkflow(ctx workflow.Context, url string) (*WorkflowResult, error) 
 }
 
 func BotGoldActivity(ctx context.Context, lastRunTime, thisRunTime time.Time, url string) ([]SGold, error) {
-	// Query database, call external API, or do any other non-deterministic action.
-	// logger := activity.GetLogger(ctx)
-	// logger.Info("")
 	activity.GetLogger(ctx).Info("Cron job running.", "lastRunTime_exclude", lastRunTime, "thisRunTime_include", thisRunTime)
 	return ScraperGold(url)
-	// return nil
 }
 func BotGoldActivity2(ctx context.Context, lastRunTime, thisRunTime time.Time, url string) ([]SGold, error) {
 	// Query database, call external API, or do any other non-deterministic action.

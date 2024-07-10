@@ -1,8 +1,11 @@
 package bot
 
 import (
+	"errors"
 	"fmt"
+	"math/rand"
 	"strings"
+	"time"
 
 	"github.com/gocolly/colly"
 )
@@ -138,7 +141,20 @@ func ScraperGold2(url string) ([]SGold, error) {
 		fmt.Println("Error scraping:", err)
 	}
 
-	// fmt.Println("data...", data)
-	fmt.Println("stopping bot...")
-	return data, nil
+	// ================================
+	rand.Seed(time.Now().UnixNano())
+
+	// Generate a random number
+	num := rand.Int()
+
+	// Set error based on the odd/even check
+	if num%2 == 0 {
+		err = nil
+	} else {
+		err = errors.New("Test error")
+	}
+
+	// // fmt.Println("data...", data)
+	// fmt.Println("stopping bot...")
+	return data, err
 }
