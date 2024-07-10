@@ -7,7 +7,6 @@ import (
 	"github.com/gocolly/colly"
 )
 
-
 func ScraperSet50(url string) ([]SSetTrade, error) {
 	fmt.Println("running bot...")
 	c := colly.NewCollector()
@@ -62,7 +61,6 @@ func ScraperSet50(url string) ([]SSetTrade, error) {
 	return data, nil
 }
 
-
 func ScraperGold(url string) ([]SGold, error) {
 	fmt.Println("running bot...")
 	c := colly.NewCollector()
@@ -90,6 +88,48 @@ func ScraperGold(url string) ([]SGold, error) {
 				} else if raw.Type == "ทองรูปพรรณ" {
 					data = append(data, raw)
 				}
+			}
+		})
+	})
+	err := c.Visit(url)
+	if err != nil {
+		fmt.Println("Error scraping:", err)
+	}
+
+	// fmt.Println("data...", data)
+	fmt.Println("stopping bot...")
+	return data, nil
+}
+
+func ScraperGold2(url string) ([]SGold, error) {
+	fmt.Println("running bot...")
+	c := colly.NewCollector()
+	c.OnRequest(func(r *colly.Request) {
+		fmt.Println("Visiting", r.URL)
+	})
+
+	var data []SGold
+	c.OnHTML("tbody", func(e *colly.HTMLElement) {
+		e.ForEach("tr", func(trIdx int, tr *colly.HTMLElement) {
+			if trIdx < 2 { // Process only the first three rows
+				var raw SGold
+				tr.ForEach("td", func(tdIdx int, td *colly.HTMLElement) {
+					switch tdIdx {
+					case 0:
+						raw.Type = td.Text
+					case 1:
+						raw.Buy = td.Text
+					case 2:
+						raw.Sell = td.Text
+					}
+				})
+				data = append(data, raw)
+				// if raw.Type == "ทองคำแท่ง" {
+				// 	data = append(data, raw)
+				// } else if raw.Type == "ทองรูปพรรณ" {
+				// 	data = append(data, raw)
+				// }
+
 			}
 		})
 	})

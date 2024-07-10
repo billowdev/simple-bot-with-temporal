@@ -35,6 +35,9 @@ func BotGoldWorkflow(ctx workflow.Context, url string) (*WorkflowResult, error) 
 		workflow.GetLogger(ctx).Error("Cron job bot activity failed.", "Error", err)
 		return nil, err
 	}
+
+	_ = workflow.ExecuteActivity(ctx1, BotGoldActivity2, lastRunTime, thisRunTime, url).Get(ctx, nil)
+
 	// logger.Info("Bot activity finished", "result", result)
 	// return result, nil
 	return &WorkflowResult{
@@ -49,5 +52,13 @@ func BotGoldActivity(ctx context.Context, lastRunTime, thisRunTime time.Time, ur
 	// logger.Info("")
 	activity.GetLogger(ctx).Info("Cron job running.", "lastRunTime_exclude", lastRunTime, "thisRunTime_include", thisRunTime)
 	return ScraperGold(url)
+	// return nil
+}
+func BotGoldActivity2(ctx context.Context, lastRunTime, thisRunTime time.Time, url string) ([]SGold, error) {
+	// Query database, call external API, or do any other non-deterministic action.
+	// logger := activity.GetLogger(ctx)
+	// logger.Info("")
+	activity.GetLogger(ctx).Info("Cron job running.", "lastRunTime_exclude", lastRunTime, "thisRunTime_include", thisRunTime)
+	return ScraperGold2(url)
 	// return nil
 }

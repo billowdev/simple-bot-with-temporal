@@ -14,6 +14,7 @@ func register(w worker.Registry) {
 
 	w.RegisterWorkflow(bot.BotGoldWorkflow)
 	w.RegisterActivity(bot.BotGoldActivity)
+	w.RegisterActivity(bot.BotGoldActivity2)
 
 }
 

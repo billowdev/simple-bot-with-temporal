@@ -5,12 +5,12 @@ import (
 	"log"
 	"simple-bot-with-temporal/bot"
 
-	"github.com/google/uuid"
 	"go.temporal.io/sdk/client"
 )
 
 func RunSetTrade(c client.Client) {
-	workflowID := "bot_set_trade_" + uuid.New().String()
+	// workflowID := "bot_set_trade_" + uuid.New().String()
+	workflowID := "bot_set_trade"
 	wo := client.StartWorkflowOptions{
 		ID:        workflowID,
 		TaskQueue: "bot_worker",
@@ -25,7 +25,8 @@ func RunSetTrade(c client.Client) {
 }
 
 func RunGold(c client.Client) {
-	workflowID := "bot_gold_price_today_" + uuid.New().String()
+	// workflowID := "bot_gold_price_today_" + uuid.New().String()
+	workflowID := "bot_gold_price_today"
 	wo := client.StartWorkflowOptions{
 		ID:        workflowID,
 		TaskQueue: "bot_worker",
