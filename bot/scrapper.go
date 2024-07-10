@@ -7,13 +7,6 @@ import (
 	"github.com/gocolly/colly"
 )
 
-type SSetTrade struct {
-	Index  string
-	Price  string
-	Change string
-	Volume string
-	Value  string
-}
 
 func ScraperSet50(url string) ([]SSetTrade, error) {
 	fmt.Println("running bot...")
@@ -43,7 +36,7 @@ func ScraperSet50(url string) ([]SSetTrade, error) {
 						}
 					}
 					if len(cleanedLines) != 5 {
-						fmt.Println("Error: Expected 5 lines of data")
+						// fmt.Println("Error: Expected 5 lines of data")
 						return
 					}
 					s := SSetTrade{
@@ -64,16 +57,11 @@ func ScraperSet50(url string) ([]SSetTrade, error) {
 		fmt.Println("Error scraping:", err)
 	}
 
-	fmt.Println("data...", data)
+	// fmt.Println("data...", data)
 	fmt.Println("stopping bot...")
 	return data, nil
 }
 
-type SGold struct {
-	Type string
-	Buy  string
-	Sell string
-}
 
 func ScraperGold(url string) ([]SGold, error) {
 	fmt.Println("running bot...")

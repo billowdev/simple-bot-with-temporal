@@ -13,7 +13,7 @@ func RunSetTrade(c client.Client) {
 	workflowID := "bot_set_trade_" + uuid.New().String()
 	wo := client.StartWorkflowOptions{
 		ID:        workflowID,
-		TaskQueue: "cron_bot_settrade_taskqueue",
+		TaskQueue: "bot_worker",
 		// CronSchedule: "* * * * *",
 	}
 	link := "https://www.set.or.th/th/home"
@@ -28,7 +28,7 @@ func RunGold(c client.Client) {
 	workflowID := "bot_gold_price_today_" + uuid.New().String()
 	wo := client.StartWorkflowOptions{
 		ID:        workflowID,
-		TaskQueue: "cron_bot_gold_taskqueue",
+		TaskQueue: "bot_worker",
 		// CronSchedule: "* * * * *",
 	}
 	link := "https://xn--42cah7d0cxcvbbb9x.com/"
@@ -41,7 +41,8 @@ func RunGold(c client.Client) {
 
 func main() {
 	c, err := client.Dial(client.Options{
-		HostPort: client.DefaultHostPort,
+		// HostPort: client.DefaultHostPort,
+		HostPort: "172.16.40.38:7233",
 	})
 	if err != nil {
 		log.Fatalln("Unable to connect to the client", err)
